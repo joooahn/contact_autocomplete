@@ -1,0 +1,51 @@
+plugins {
+  id 'org.springframework.boot' version '2.1.4.RELEASE'
+  id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+sourceSets {
+  main {
+    resources {
+      srcDirs 'src/main/resources', 'src/main/java'
+    }
+  }
+}
+
+dependencies {
+
+  // web
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+
+  // DB
+  implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
+  runtime 'mysql:mysql-connector-java'
+
+  // lombok
+  compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
+
+  // test
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.0.1'
+
+  // util
+  implementation 'org.apache.commons:commons-lang3:3.8.1'
+}

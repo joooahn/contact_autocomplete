@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.miniproject.mapper.PositionPriorityMapper">
+
+	<insert id="createPosition">
+		INSERT INTO position_priority(name, priority)
+		VALUES(#{name}, #{priority})
+	</insert>
+
+	<select id="retrievePosition" resultType="com.example.miniproject.model.PositionPriority">
+		SELECT *
+		FROM position_priority
+	</select>
+
+	<select id="retrievePositionByTargetNameOrPriority" resultType="com.example.miniproject.model.PositionPriority">
+		SELECT *
+		FROM position_priority
+		WHERE position_priority.name = #{targetName} or position_priority.priority = #{priority}
+	</select>
+
+	<update id="updatePosition">
+		UPDATE position_priority
+		SET priority = #{priority}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="deletePosition">
+		DELETE FROM position_priority
+		WHERE id = #{id}
+	</delete>
+
+
+	<!--Position Priority 테스트용-->
+	<select id="searchOrderByPosition" resultType="com.example.miniproject.model.PublicData">
+		SELECT *
+		FROM public_data
+				 LEFT OUTER JOIN position_priority
+								 ON public_data.position_Id = position_priority.id
+		ORDER BY priority IS NULL, priority ASC
+		LIMIT 20
+	</select>
+
+	<select id="getPosition" resultType="com.example.miniproject.model.PositionPriority">
+		SELECT *
+		FROM position_priority
+		WHERE id = (SELECT position_id FROM public_data WHERE id=#{id})
+	</select>
+
+</mapper>

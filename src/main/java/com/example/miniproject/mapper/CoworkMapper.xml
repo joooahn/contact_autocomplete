@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.miniproject.mapper.CoworkMapper">
+
+	<insert id="register">
+		INSERT INTO cowork_department (user_id, department_id)
+		VALUES (#{userId}, #{departmentId})
+	</insert>
+
+	<delete id="deregister">
+		DELETE FROM cowork_department
+		WHERE
+			user_id = #{userId}
+			AND department_id = #{departmentId}
+	</delete>
+
+	<select id="getDepartments" resultType="com.example.miniproject.model.Department">
+		SELECT *
+		FROM department
+	</select>
+
+	<select id="getCoworkDepartments" resultType="com.example.miniproject.model.Department" parameterType="java.lang.Long">
+		SELECT department.id, department.name
+		FROM cowork_department
+			LEFT JOIN department
+				ON department.id = cowork_department.department_id
+		WHERE
+			cowork_department.user_id = #{userId}
+	</select>
+
+	<select id="isCoworkWIthUser" resultType="java.lang.Boolean" parameterType="java.lang.Long">
+		SELECT EXISTS
+			(SELECT 1
+				FROM cowork_department
+				WHERE
+					user_id = #{userId}
+					and department_id = #{departmentId}) AS cowork
+	</select>
+
+	<select id="getDepartmentByUser" resultType="com.example.miniproject.model.Department" parameterType="java.lang.Long">
+		SELECT *
+		FROM department
+		WHERE
+			id = (SELECT department_id FROM public_data WHERE public_data.id = #{userId})
+	</select>
+
+	<select id="getDepartmentsWithCowork" resultType="com.example.miniproject.model.DepartmentWithCowork" parameterType="java.lang.Long">
+		SELECT
+			department.*,
+			cowork_department.department_id is not null AS cowork
+		FROM department
+			LEFT OUTER JOIN cowork_department
+				ON cowork_department.user_id = #{userId}
+				AND cowork_department.department_id = department.id;
+	</select>
+
+	<update id="updateDepartment" parameterType="Long">
+		UPDATE public_data
+		SET
+			department_id = #{departmentId}
+			, department = (select name from department where department.id = #{departmentId})
+		WHERE
+			public_data.id = #{userId}
+	</update>
+</mapper>

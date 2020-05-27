@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://106.10.53.223:3306/hackday?characterEncoding=UTF-8&serverTimezone=UTC
+    username: hackday_user
+    password: Hackdayauto!23
+
+mybatis:
+  type-aliases-package: com.example.miniproject.model`
+logging:
+  level:
+    com.example.miniproject.mapper: DEBUG

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.miniproject.mapper.PublicDataMapper">
+
+	<select id="findById" resultType="com.example.miniproject.model.PublicData">
+		SELECT *
+		FROM public_data
+		WHERE id = #{id}
+	</select>
+
+	<select id="findIdByEmail" resultType="Long">
+		SELECT ID
+		FROM public_data
+		WHERE EMAIL = #{email}
+	</select>
+
+	<select id="findAll" resultType="com.example.miniproject.model.PublicData">
+		SELECT *
+		FROM public_data
+	</select>
+
+	<select id="findAllById" resultType="com.example.miniproject.model.PublicData">
+		SELECT *
+		FROM public_data
+		WHERE id in
+		<foreach item="id" index="index" collection="ids"
+				 open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="findAllByNameLikeOrderBy" resultType="com.example.miniproject.model.SearchData">
+		SELECT 	public_data.id,
+		 		public_data.name,
+		 		public_data.email,
+		 		public_data.department,
+				IFNULL(private_data.vip, FALSE) AS vip,
+				NOT ISNULL(cowork_department.department_id) AS cowork,
+				position_priority.name AS `position`
+		FROM public_data
+				 LEFT JOIN private_data
+						   ON public_data.id = private_data.to
+							   AND private_data.from = #{searcherId}
+				LEFT JOIN cowork_department
+						ON cowork_department.user_id = #{searcherId}
+								AND public_data.department_id = cowork_department.department_id
+				LEFT JOIN position_priority
+						ON position_priority.id = public_data.position_id
+		WHERE public_data.name LIKE CONCAT('%', #{searchText}, '%')
+		   OR public_data.email LIKE CONCAT('%', #{searchText}, '%')
+		ORDER BY public_data.name = #{searchText} DESC,
+		         public_data.email = #{searchText} DESC,
+				 IFNULL(private_data.vip, FALSE) DESC,
+				 NOT ISNULL(cowork_department.department_id) DESC,
+				 IFNULL(position_priority.priority, 99999),
+		         private_data.email_send_date DESC,
+		         public_data.name
+		LIMIT 20
+	</select>
+
+	<select id="getEmailById" resultType="string">
+		SELECT email
+		FROM public_data
+		WHERE id=#{id}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO public_data (name, email)
+		VALUES (#{name}, #{email})
+	</insert>
+
+	<update id="updateContactsPosition">
+		UPDATE public_data
+		SET position_id = #{positionId}
+		WHERE id = #{id}
+	</update>
+</mapper>

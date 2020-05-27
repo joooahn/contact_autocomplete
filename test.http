@@ -1,0 +1,91 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+GET http://localhost:8080/item
+
+#############################체크##################################
+
+GET http://localhost:8080/item/title/startsWith/체크/size/3
+
+###
+
+GET http://localhost:8080/item/title/contains/체크/size/3
+
+###
+
+GET http://localhost:8080/item/title/endsWith/체크/size/3
+
+#############################노란##################################
+
+GET http://localhost:8080/item/title/startsWith/노란/size/3
+
+###
+
+GET http://localhost:8080/item/title/contains/노란/size/3
+
+###
+
+GET http://localhost:8080/item/title/endsWith/노란/size/3
+
+###############################박스################################
+
+GET http://localhost:8080/item/title/startsWith/박스/size/3
+
+###
+
+GET http://localhost:8080/item/title/contains/박스/size/10
+
+###
+
+GET http://localhost:8080/item/title/endsWith/박스/size/3
+
+###
+
+
+
+
+
+
+
+
+#############################체크##################################
+
+GET http://localhost:8080/item/search?st=STARTS_WITH&k=체크&s=3
+
+###
+
+GET http://localhost:8080/item/search?st=CONTAINS&k=체크&s=3
+
+###
+
+GET http://localhost:8080/item/search?st=ENDS_WITH&k=체크&s=3
+
+#############################노란##################################
+
+GET http://localhost:8080/item/search?st=STARTS_WITH&k=노란&s=3
+
+###
+
+GET http://localhost:8080/item/search?st=CONTAINS&k=노란&s=3
+
+###
+
+GET http://localhost:8080/item/search?st=ENDS_WITH&k=노란&s=3
+
+###############################박스################################
+
+GET http://localhost:8080/item/search?st=STARTS_WITH&k=박스&s=3
+
+###
+
+GET http://localhost:8080/item/search?st=CONTAINS&k=박스&s=3
+
+###
+
+GET http://localhost:8080/item/search?st=ENDS_WITH&k=박스&s=3
+
+###
